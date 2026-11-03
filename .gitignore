@@ -15,3 +15,11 @@ dist/
 
 # Undo-tree save-files
 *.~undo-tree
+
+# Local directories
+eln-cache
+elpa
+
+# Temp files
+\#*
+.#*

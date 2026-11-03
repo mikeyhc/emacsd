@@ -14,7 +14,7 @@
 (set-face-background 'default "#111")
 
 ;; line numbers
-(global-display-line-numbers-mode)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; enable fido
 (fido-mode)
