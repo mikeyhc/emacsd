@@ -1,0 +1,2 @@
+# emacsd
+Emacs configuration files
