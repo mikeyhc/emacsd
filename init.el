@@ -7,9 +7,6 @@
 (setq inhibit-startup-screen 1)
 (setq ring-bell-function 'ignore)
 
-;; set window size
-(setq initial-frame-alist '((top . 0) (left . 0) (width . 120) (height . 80)))
-
 ;; dark theme
 (load-theme 'wombat)
 (set-face-background 'default "#111")
@@ -75,5 +72,10 @@
 ;; configure auto-complete
 (global-auto-complete-mode t)
 (define-key ac-complete-mode-map "\t" 'ac-expand)
+
+; load local configuration
+(let ((local-config (expand-file-name "local.el" user-emacs-directory)))
+  (when (file-exists-p local-config)
+    (load local-config nil 'nomessage)))
 
 (provide 'init)
