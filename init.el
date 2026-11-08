@@ -5,6 +5,7 @@
   (tool-bar-mode 0)
   (scroll-bar-mode 0))
 (setq inhibit-startup-screen 1)
+(setq ring-bell-function 'ignore)
 
 ;; set window size
 (setq initial-frame-alist '((top . 0) (left . 0) (width . 120) (height . 80)))
@@ -38,12 +39,9 @@
   (package-refresh-contents))
 
 ;; install packages
-(dolist (package '(slime paredit rainbow-delimiters))
+(dolist (package '(paredit rainbow-delimiters auto-complete cider))
   (unless (package-installed-p package)
     (package-install package)))
-
-;; configure SBCL as the Lisp program for SLIME
-(setq inferior-lisp-program "sbcl")
 
 ;; enable paredit
 (add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
@@ -51,19 +49,12 @@
 (add-hook 'ielm-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'slime-repl-mode-hook 'enable-paredit-mode)
-(require 'paredit)
-(defun override-slime-del-key ()
-  (define-key slime-repl-mode-map
-              (read-kbd-macro paredit-backward-delete-key) nil))
-(add-hook 'slime-repl-mode-hook 'override-slime-del-key)
 
 ;; enable rainbow delimiters
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'ielm-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
 (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'slim-repl-mode-hook 'rainbow-delimiters-mode)
 
 ;; customize rainbow delimiters
 (require 'rainbow-delimiters)
@@ -77,12 +68,12 @@
 (set-face-foreground 'rainbow-delimiters-depth-8-face "#999") ; mediuam gray
 (set-face-foreground 'rainbow-delimiters-depth-9-face "#666") ; dark gray
 
-;; open slime on the right
-(add-to-list 'display-buffer-alist
-             '("\\*slime-repl.*\\*"
-               (display-buffer-in-side-window)
-               (side . right)
-               (slot . 0)
-               (window-width . 0.4)))
+;; cider specifics
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'cider-mode-hook 'paredit-mode)
+
+;; configure auto-complete
+(global-auto-complete-mode t)
+(define-key ac-complete-mode-map "\t" 'ac-expand)
 
 (provide 'init)
